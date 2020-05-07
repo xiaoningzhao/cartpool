@@ -51,7 +51,11 @@ public class StoreServiceImpl implements StoreService {
             Store updateStore = storeRepository.findById(store.getId()).get();
             if(!storeRepository.existsByName(store.getName()) || updateStore.getName().equals(store.getName())){
 
-                updateStore = store;
+                updateStore.setName(store.getName());
+                updateStore.setStreet(store.getStreet());
+                updateStore.setCity(store.getCity());
+                updateStore.setState(store.getState());
+                updateStore.setZip(store.getZip());
                 return storeRepository.save(updateStore);
 
             }else {
