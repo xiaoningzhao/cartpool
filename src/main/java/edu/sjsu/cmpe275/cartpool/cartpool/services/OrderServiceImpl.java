@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,7 +55,9 @@ public class OrderServiceImpl implements OrderService {
             d.setTaxFee(taxfee);
         }
 
-        order.setAmount(amount);
+
+        BigDecimal bdAmount = new BigDecimal(amount).setScale(2, RoundingMode.HALF_UP);
+        order.setAmount(bdAmount.doubleValue());
 
         order.setOrderDetails(null);
         order.setStatus(OrderStatus.CREATED);
