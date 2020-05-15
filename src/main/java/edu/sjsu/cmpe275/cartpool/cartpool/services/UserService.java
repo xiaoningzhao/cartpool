@@ -13,4 +13,9 @@ public interface UserService {
     User joinCartPool(Long id, Long cartPoolId);
     User setContributionScore(Long id, Integer score);
     User firebaseLogin(User user);
+    User joinPoolRef(Long id, Long poolId, String refScreenName);
+    User joinPoolLeader(Long id, Long poolId);
+    User verifyJoinPoolRef(Long userId, Long poolId, boolean join);
+    User verifyJoinPoolLeader(Long userId, Long poolId, boolean join);
+    User leavePool(Long userId, Long poolId);
 }

@@ -77,6 +77,50 @@ public class UserController {
 
 
     /**
+     * User joins pool
+     * /api/user/joinpoolref
+     */
+    @GetMapping("/joinpoolref")
+    public User joinPoolRef(@RequestParam(value = "userId") @NotNull Long userId,
+                            @RequestParam(value = "poolId") @NotNull Long poolId,
+                            @RequestParam(value = "refScreenName") @NotNull String refScreenName ) {
+        return userService.joinPoolRef(userId, poolId, refScreenName);
+
+    }
+
+    /**
+     * User joins pool
+     * /api/user/joinpoolleader
+     */
+    @GetMapping("/joinpoolleader")
+    public User joinPoolLeader(@RequestParam(value = "userId") @NotNull Long userId,
+                               @RequestParam(value = "poolId") @NotNull Long poolId) {
+        return userService.joinPoolLeader(userId, poolId);
+    }
+
+    /**
+     * Verify joining pool request by reference
+     * /api/user/verifyjoinpoolref
+     */
+    @GetMapping("/verifyjoinpoolref")
+    public User verifyJoinPoolRef(@RequestParam(value = "userId") @NotNull Long userId,
+                                  @RequestParam(value = "poolId") @NotNull Long poolId,
+                                  @RequestParam(value = "join") @NotNull boolean join) {
+        return userService.verifyJoinPoolRef(userId, poolId, join);
+    }
+
+    /**
+     * Verify joining pool request by leader
+     * /api/user/verifyjoinpoolleader
+     */
+    @GetMapping("/verifyjoinpoolleader")
+    public User verifyJoinPoolLeader(@RequestParam(value = "userId") @NotNull Long userId,
+                                     @RequestParam(value = "poolId") @NotNull Long poolId,
+                                     @RequestParam(value = "join") @NotNull boolean join) {
+        return userService.verifyJoinPoolLeader(userId, poolId, join);
+    }
+
+    /**
      * Join a CartPool
      * /api/user/joinpool
      */
@@ -107,6 +151,19 @@ public class UserController {
     public User updateRole(@PathVariable("id") @NotNull Integer id, @RequestParam(value = "poolId") @NotNull Long poolId){
         return null;
     }
+
+    /**
+     * Leave a pool
+     * /api/user/{userId}/pool/{poolId}
+     */
+    @PutMapping("/{userId}/pool/{poolId}")
+    public User leavePool(@PathVariable("userId") @NotNull Long userId,
+                                     @PathVariable("poolId") @NotNull Long poolId ){
+
+        return userService.leavePool(userId, poolId);
+    }
+
+
 
     /**
      * Firebase Login
