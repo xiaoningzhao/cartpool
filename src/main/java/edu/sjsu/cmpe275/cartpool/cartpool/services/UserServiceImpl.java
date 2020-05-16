@@ -85,8 +85,10 @@ public class UserServiceImpl implements UserService {
             user.setActive(true);
             user.setToken(null);
             userRepository.save(user);
+            return user;
+        }else{
+            throw new NotFoundException("Cannot find token");
         }
-        return user;
     }
 
     @Override
@@ -256,26 +258,42 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User sendEmail(Long userId, String toUserScreenName, String subject, String content) {
+        if(userRepository.findById(userId).isPresent()){
+            User user = userRepository.findById(userId).get();
+            if(userRepository.existsByScreenName(toUserScreenName)){
+                User toUser = userRepository.findByScreenName(toUserScreenName);
+                mailService.sendHtmlMail(toUser.getEmail(), subject, content+"<p>Sent from CartPool user: "+ user.getScreenName() +"</p>");
+                return user;
+            }else{
+                throw new NotFoundException("Cannot find user "+toUserScreenName);
+            }
+        }else {
+            throw new NotFoundException("Cannot find user");
+        }
+    }
+
     public void sendVerificationEmail(String to, String token){
         String subject = "Registration Confirmation";
         String content = "<p>Thanks for registering to CartPool!</p>" +
-                "<p>Please verify your email at: <a href='http://localhost:3000/verification/" + token + "'>Link</a></p>";
+                "<p>Please verify your email at: <a href='"+ UtilService.WEB_URL +"/verification?token=" + token + "'>Link</a></p>";
         mailService.sendHtmlMail(to, subject, content);
     }
 
     public void sendJoinPoolEmailRef(String to, String userScreenName, Long userId, Long poolId){
         String subject = "Joining Pool Request";
         String content = "<p>User "+ userScreenName + " requests to join pool.</p>" +
-                "<p>If you support, please click: <a href='http://localhost:3000/verifyjoinpoolref/" + userId +"/" + poolId + "/true'>Support</a></p>"+
-                "<p>If you do not support, please click: <a href='http://localhost:3000/verifyjoinpoolref/"  + userId +"/" + poolId + "/false'>Not Support</a></p>";
+                "<p>If you support, please click: <a href='"+ UtilService.WEB_URL +"/verifyjoinpoolref?userId=" + userId +"&poolId=" + poolId + "&join=true'>Support</a></p>"+
+                "<p>If you do not support, please click: <a href='"+ UtilService.WEB_URL +"/verifyjoinpoolref?userId="  + userId +"&poolId=" + poolId + "&join=false'>Not Support</a></p>";
         mailService.sendHtmlMail(to, subject, content);
     }
 
     public void sendJoinPoolEmailLeader(String to, String userScreenName, Long userId, Long poolId){
         String subject = "Joining Pool Request";
         String content = "<p>User "+ userScreenName + " requests to join pool.</p>" +
-                "<p>If you approve, please click: <a href='http://localhost:3000/verifyjoinpoolleader/" + userId +"/" + poolId + "/true'>Approve</a></p>"+
-                "<p>If you do not approve, please click: <a href='http://localhost:3000/verifyjoinpoolleader/" + userId +"/" + poolId + "/false'>Not Approve</a></p>";
+                "<p>If you approve, please click: <a href='"+ UtilService.WEB_URL +"/verifyjoinpoolleader?userId=" + userId +"&poolId=" + poolId + "&join=true'>Approve</a></p>"+
+                "<p>If you do not approve, please click: <a href='"+ UtilService.WEB_URL +"/verifyjoinpoolleader?userId=" + userId +"&poolId=" + poolId + "&join=false'>Not Approve</a></p>";
         mailService.sendHtmlMail(to, subject, content);
     }
 

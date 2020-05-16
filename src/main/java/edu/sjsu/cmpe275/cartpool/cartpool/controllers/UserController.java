@@ -184,10 +184,18 @@ public class UserController {
         return user;
     }
 
+    /**
+     * Send email
+     * /api/user/email
+     */
+    @PostMapping("/email")
+    public User sendEmail(@RequestParam(value = "userId") Long userId,
+                          @RequestParam(value = "toUserScreenName") String toUserScreenName ,
+                          @RequestParam(value = "subject") String subject,
+                          @RequestParam(value = "content", required = false) String content) {
 
+        return userService.sendEmail(userId, toUserScreenName, subject, content);
 
-
-
-
+    }
 
 }
