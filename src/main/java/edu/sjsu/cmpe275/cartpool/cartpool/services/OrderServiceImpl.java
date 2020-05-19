@@ -165,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
 
                 String pickupSubject = "Order Picked Up";
                 String pickupContent = "<p>Your have picked up order("+ order.getId()+") for others.</p>";
-                pickupContent += "<p>Order Details: "+ order.getOrderDetails().toString() +"</p>";
+//                pickupContent += "<p>Order Details: "+ order.getOrderDetails().toString() +"</p>";
                 pickupContent += "<p>Shipping address is "+ order.getStreet()+", "+ order.getCity()+", "+order.getState()+
                         ", "+ order.getZip()+"</p>";
                 mailService.sendHtmlMail(pickupUser.getEmail(),pickupSubject, pickupContent);

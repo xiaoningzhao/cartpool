@@ -192,7 +192,7 @@ public class UserController {
     public User sendEmail(@RequestParam(value = "userId") Long userId,
                           @RequestParam(value = "toUserScreenName") String toUserScreenName ,
                           @RequestParam(value = "subject") String subject,
-                          @RequestParam(value = "content", required = false) String content) {
+                          @RequestParam(value = "content") String content) {
 
         return userService.sendEmail(userId, toUserScreenName, subject, content);
 
